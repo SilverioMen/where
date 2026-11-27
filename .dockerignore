@@ -1,0 +1,16 @@
+# Contexte de build Docker : n'envoyer que le nécessaire (sources frontend et backend).
+# Sans ce fichier, `COPY frontend/ ./` écraserait les node_modules installés dans l'image
+# par ceux de la machine hôte (binaires natifs d'un autre OS).
+**/node_modules
+**/dist
+**/target
+**/.env
+**/.env.local
+.git
+.github
+.idea
+.vscode
+**/.DS_Store
+*.pdf
+data
+docs

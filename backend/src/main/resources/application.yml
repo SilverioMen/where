@@ -2,6 +2,12 @@ server:
   port: ${PORT:8080}
   tomcat:
     max-swallow-size: 30MB
+  # Ne jamais exposer de détail technique dans les réponses d'erreur (valeurs par défaut rendues explicites).
+  error:
+    include-stacktrace: never
+    include-message: never
+    include-binding-errors: never
+    include-exception: false
 spring:
   application:
     name: orientation-backend

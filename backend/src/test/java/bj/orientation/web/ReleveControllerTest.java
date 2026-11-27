@@ -3,6 +3,7 @@ package bj.orientation.web;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,5 +33,12 @@ class ReleveControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data[0].libelle").value("Mathématiques"))
             .andExpect(jsonPath("$.data[0].note").value(12.5));
+    }
+
+    @Test
+    void requeteNonMultipartRetourne400() throws Exception {
+        mvc.perform(post("/api/v1/releves"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.error.code").value("REQUETE_INVALIDE"));
     }
 }

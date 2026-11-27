@@ -36,8 +36,10 @@ public class WebConfig implements WebMvcConfigurer {
   public CorsFilter corsFilter() {
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowedOrigins(allowedOrigins);
-    config.addAllowedHeader("*");
-    config.addAllowedMethod("*");
+    // Seuls les méthodes et en-têtes réellement utilisés par le frontend sont autorisés.
+    config.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
+    config.setAllowedHeaders(List.of("Content-Type", "X-Admin-Token"));
+    config.setMaxAge(3600L);
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", config);
     return new CorsFilter(source);

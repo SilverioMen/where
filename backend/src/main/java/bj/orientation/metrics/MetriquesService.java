@@ -1,5 +1,6 @@
 package bj.orientation.metrics;
 
+import bj.orientation.model.Serie;
 import jakarta.annotation.PreDestroy;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,8 +24,7 @@ public class MetriquesService {
 
   /** Un calcul de recommandation : latence et éventuelle erreur, par série. */
   public void enregistrerCalcul(String serie, long latenceMs, boolean erreur) {
-    String cle = (serie == null || serie.isBlank()) ? "?" : serie.trim().toUpperCase();
-    Delta d = pending.computeIfAbsent(cle(LocalDate.now(), cle), k -> new Delta());
+    Delta d = pending.computeIfAbsent(cle(LocalDate.now(), serieConnue(serie)), k -> new Delta());
     synchronized (d) {
       d.calculs++;
       if (erreur) {
@@ -74,6 +74,22 @@ public class MetriquesService {
         repo.findByJourAndSerie(jour, serie).orElseGet(() -> new StatJournaliere(jour, serie));
     row.ajouter(d.calculs, d.erreurs, d.latenceTotaleMs, d.latenceCount, d.latenceMaxMs);
     repo.save(row);
+  }
+
+  /**
+   * Ramène la série saisie à un code connu, sinon à « ? ». Évite qu'une valeur arbitraire envoyée
+   * par un client crée une ligne de statistiques par valeur (cardinalité non bornée, libellé trop
+   * long pour la colonne).
+   */
+  static String serieConnue(String serie) {
+    if (serie == null || serie.isBlank()) {
+      return "?";
+    }
+    try {
+      return Serie.fromCode(serie).name();
+    } catch (IllegalArgumentException e) {
+      return "?";
+    }
   }
 
   private static String cle(LocalDate jour, String serie) {

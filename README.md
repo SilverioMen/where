@@ -39,7 +39,7 @@ bac par série. Détails, schéma d'une filière et limites : [`data/README.md`]
 ### Prérequis
 
 - JDK 21, Maven 3.9+
-- Node.js 20+ et npm
+- Node.js 22 (ou 20.19+, minimum requis par Vite 8) et npm
 
 ### Backend
 
@@ -93,7 +93,7 @@ TLS pour le domaine.
 ## Qualité & CI
 
 - **Backend** : `mvn spotless:check test`
-- **Frontend** : `npm run lint && npm test && npm run build`
+- **Frontend** : `npm run format:check && npm run lint && npm test && npm run build`
 
 La CI GitHub Actions exécute ces deux pipelines (format, lint, tests, build) sur chaque PR.
 

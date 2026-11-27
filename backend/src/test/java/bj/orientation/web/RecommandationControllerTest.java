@@ -50,6 +50,35 @@ class RecommandationControllerTest {
     }
 
     @Test
+    void jsonMalFormeRetourne400AvecEnveloppeErreur() throws Exception {
+        mvc.perform(post("/api/v1/recommandations").contentType("application/json").content("{pas du json"))
+           .andExpect(status().isBadRequest())
+           .andExpect(jsonPath("$.error.code").value("REQUETE_INVALIDE"))
+           .andExpect(jsonPath("$.trace").doesNotExist());
+    }
+
+    @Test
+    void libelleManquantRetourne400() throws Exception {
+        String body = """
+            {"serie":"D","matieresFortes":["Maths"],"notes":[{"note":12,"coefficient":4}]}""";
+        mvc.perform(post("/api/v1/recommandations").contentType("application/json").content(body))
+           .andExpect(status().isBadRequest())
+           .andExpect(jsonPath("$.error.code").value("VALIDATION_ERROR"));
+    }
+
+    @Test
+    void tropDeNotesRetourne400() throws Exception {
+        StringBuilder notes = new StringBuilder();
+        for (int i = 0; i < 31; i++) {
+            notes.append(i == 0 ? "" : ",").append("{\"libelle\":\"M").append(i)
+                 .append("\",\"note\":10,\"coefficient\":1}");
+        }
+        String body = "{\"serie\":\"D\",\"matieresFortes\":[\"M0\"],\"notes\":[" + notes + "]}";
+        mvc.perform(post("/api/v1/recommandations").contentType("application/json").content(body))
+           .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void seriesRetourneLaListeSousData() throws Exception {
         mvc.perform(get("/api/v1/series"))
            .andExpect(status().isOk())

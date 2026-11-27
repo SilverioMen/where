@@ -44,4 +44,11 @@ class MetriquesServiceTest {
             .orElseThrow();
     assertThat(visite.getCalculs()).isEqualTo(1);
   }
+
+  @Test
+  void serieInconnueRameneeAuPointDInterrogation() {
+    assertThat(MetriquesService.serieConnue(" d ")).isEqualTo("D");
+    assertThat(MetriquesService.serieConnue("x".repeat(500))).isEqualTo("?");
+    assertThat(MetriquesService.serieConnue(null)).isEqualTo("?");
+  }
 }

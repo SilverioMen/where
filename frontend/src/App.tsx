@@ -218,13 +218,13 @@ function App() {
           </div>
 
           {serie && (
-            <div className="field">
-              <label className="field__lab">
+            <div className="field" role="group" aria-labelledby="titre-matieres-fortes">
+              <div id="titre-matieres-fortes" className="field__lab">
                 <span className="step" aria-hidden="true">
                   2
                 </span>{" "}
                 Tes 3 matières les plus fortes
-              </label>
+              </div>
               <NotesTable
                 lignes={lignesFortes}
                 onChange={setLignesFortes}
@@ -258,13 +258,13 @@ function App() {
 
         {resultats && aCompleter.length > 0 && (
           <section className="card card--float" aria-label="Affiner l'estimation">
-            <div className="field">
-              <label className="field__lab">
+            <div className="field" role="group" aria-labelledby="titre-affiner">
+              <div id="titre-affiner" className="field__lab">
                 <span className="step" aria-hidden="true">
                   +
                 </span>{" "}
                 Affine ton estimation
-              </label>
+              </div>
               <p className="hint">
                 Certaines filières se calculent aussi sur ces matières. Renseigne-les pour les faire
                 apparaître, calculées sur leurs 3 matières exactes.

@@ -1,32 +1,25 @@
-# React + TypeScript + Vite
+# Frontend « Après mon bac »
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Interface mobile-first (React 19 · TypeScript · Vite) qui consomme l'API REST du backend
+(`/api/v1`). Vue d'ensemble du projet : [`../README.md`](../README.md).
 
-Currently, two official plugins are available:
+## Prérequis
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Node.js 22 (ou 20.19+, minimum requis par Vite 8) et npm.
 
-## React Compiler
+## Commandes
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm ci                # installe les dépendances figées par package-lock.json
+npm run dev           # serveur de développement sur http://localhost:5173
+npm run format:check  # vérifie le format (Prettier) ; `npm run format` corrige
+npm run lint          # analyse statique (oxlint)
+npm test              # tests unitaires (Vitest)
+npm run build         # vérification des types (tsc) puis build de production dans dist/
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Configuration
+
+L'URL de l'API se règle avec `VITE_API_BASE_URL` (voir `.env.example`). Par défaut :
+`http://localhost:8080/api/v1` en développement, `/api/v1` en production (`.env.production`,
+frontend et API servis depuis la même origine).
